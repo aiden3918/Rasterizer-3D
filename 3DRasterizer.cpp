@@ -183,8 +183,8 @@ public:
         function postTransFn = postProjTransFunction(projectedFn, postProjOffset);
 
         if (postTransFn.points.size() > 1) {
-            for (int i = 0; i < postTransFn.points.size() - 2; i++) {
-                DrawLine(postTransFn.points[i].x, postTransFn.points[i].y, postTransFn.points[i + 1].x, postTransFn.points[i + 1].y, olc::WHITE);
+            for (int i = 0; i < postTransFn.points.size() - 1; i++) {
+                DrawLine(postTransFn.points[i].x, postTransFn.points[i].y, postTransFn.points[i].x, postTransFn.points[i].y, olc::WHITE);
             }
         }
         
@@ -230,19 +230,22 @@ private:
     olc::QuickGUI::Label* invalidMsgLabel;
 
     void updateGUI() {
-        FillRect( 0, 0, ScreenWidth() - 1, ScreenHeight() / 5, olc::DARK_GREY);
-        // DEBUG: get sprites to actually draw lol
+        // gray bar
+        FillRect( 0, 0, ScreenWidth() - 1, 120, olc::DARK_GREY);
+        // axis on bot left
         DrawSprite( olc::vi2d(0, ScreenHeight() - 200), axesRef.get());
+        // draw all gui stuff
         guiManager.DrawDecal(this);
+        // top bar text
         DrawString({ 10, 10 }, "f(t) = <     ,     ,     >", olc::WHITE, 2);
         DrawString({ 500, 10 }, "At t = ", olc::WHITE, 2);
+        // copyright (OLC)
         DrawString({ (ScreenWidth() * 11 / 20) + 40, ScreenHeight() - 20 }, "Copyright 2018 - 2024 OneLoneCoder.com", olc::WHITE, 1);
     }
 
     void updateParametricPoints() {
         // vecXYZ evaluatedPts = parametric3DWithTInterval(getExpressions(), 0, 5, 0.1f);
-        // DEBUG: vector subscript out of range (again)
-        vecXYZ evaluatedPts = parametric3DWithMinMaxXYZ(getExpressions(), -10.0f, -10.0f, -10.0f, 10.0f, 10.0f, 10.0f, 0.1f);
+        vecXYZ evaluatedPts = parametric3DWithMinMaxXYZ(getExpressions(), -10.0f, -10.0f, -10.0f, 10.0f, 10.0f, 10.0f, 0.01f);
         // note: must invert y (computer graphics -> mathematical conventions)
         for (int i = 0; i < evaluatedPts[0].size(); i++) {
             appendToGraphFunction({ (float)evaluatedPts[0][i], -1.0f * (float)evaluatedPts[1][i], (float)evaluatedPts[2][i] });
@@ -283,7 +286,7 @@ private:
     }
 
     // type checking
-    //looooooong
+    // looooooong
     bool validExpressionInput(std::string* expressions) { 
         bool xOk = !isnan(evaluateExpression<double>(expressions[0], 0));
         bool yOk = !isnan(evaluateExpression<double>(expressions[1], 0));

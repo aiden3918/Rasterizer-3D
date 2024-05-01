@@ -86,19 +86,32 @@ vecXYZ parametric3DWithMinMaxXYZ(std::string expressions[3], double minX, double
     std::cout << "solving eqn now" << std::endl;
     vecXYZ parametricTerms = { {}, {}, {} };
     double t = 0.0f;
-    double currentX = 0.0f;
-    double currentY = 0.0f;
-    double currentZ = 0.0f;
-    while (((currentX > minX && currentX < maxX) && (currentY > minY && currentY < maxY) && (currentZ > minZ && currentZ < maxZ) && t < 10.0f) || isinf(currentX) || isinf(currentY) || isinf(currentZ)) {
-        currentX = evaluateExpression(expressions[0], t);
-        currentY = evaluateExpression(expressions[1], t);
-        currentZ = evaluateExpression(expressions[2], t);
-        parametricTerms[0].push_back(currentX);
-        parametricTerms[1].push_back(currentY);
-        parametricTerms[2].push_back(currentZ);
+    double cX = 0.0f;
+    double cY = 0.0f;
+    double cZ = 0.0f;
+    bool atLeastOneDimInBounds = true;
+    bool allDimInBounds = true;
+    bool anyInfs = true;
+    bool xOk, yOk, zOk;
+    // infinity is the exception
+    while ((atLeastOneDimInBounds || anyInfs) && t < 10.0f) {
+        cX = evaluateExpression(expressions[0], t);
+        cY = evaluateExpression(expressions[1], t);
+        cZ = evaluateExpression(expressions[2], t);
+
+        xOk = (cX > minX && cX < maxX); yOk = (cY > minY && cY < maxY); zOk = (cZ > minZ && cZ < maxZ);
+        atLeastOneDimInBounds = xOk || yOk || zOk;
+        allDimInBounds = xOk && yOk && zOk;
+        anyInfs = isinf(cX) || isinf(cY) || isinf(cZ);
+
+        if (allDimInBounds) {
+            parametricTerms[0].push_back(cX);
+            parametricTerms[1].push_back(cY);
+            parametricTerms[2].push_back(cZ);
+        }
         t += step;
     }
-    std::cout << "solving now" << std::endl;
+    std::cout << "solved" << std::endl;
          
     return parametricTerms;
 }

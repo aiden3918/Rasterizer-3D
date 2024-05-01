@@ -8,7 +8,7 @@
 
 ### How to Use
 1. Download files
-2. Click "3DRasterizer.cpp"
+2. Click "3DRasterizer.exe"
 3. Done!
 
 *Copyright 2018 - 2024 OneLoneCoder.com
