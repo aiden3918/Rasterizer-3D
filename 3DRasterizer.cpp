@@ -26,7 +26,6 @@ public:
 
 public:
 
-    // overrides the virtuals of the OG class in the header
     bool OnUserCreate() override
     {
         // INIT SPRITES --------------------------------------------------------------------------------------------
@@ -34,7 +33,6 @@ public:
         // ---------------------------------------------------------------------------------------------------------
         
         // INIT PLANE ----------------------------------------------------------------------------------------------
-        // meshCube.LoadFromObjectFile("axis.obj");
         graph3DPlane.lines = {
             {-10.0f, 0.0f, 0.0f, 1.0f,     10.0f, 0.0f, 0.0f, 1.0f },
             {0.0f, -10.0f, 0.0f, 1.0f,     0.0f, 10.0f, 0.0f, 1.0f },
@@ -95,6 +93,7 @@ public:
             fYaw = 0.0f;
         }
 
+        // check for valid inputs, then update graph if its good
         if (calcBtn->bPressed) {
             setExpression(0, xTextInput->sText);
             setExpression(1, yTextInput->sText);
@@ -112,6 +111,7 @@ public:
             }
         }
 
+        // check for valid input, then get properties of function at t
         if (findPtBtn->bPressed) {
             if (validNumInput(findPtTextInput->sText) && validExpressionInput(getExpressions())) {
                 getPtData(std::stof(findPtTextInput->sText));
@@ -135,7 +135,6 @@ public:
         // 7. visually draw
 
         // rotation matrices
-        // fTheta += 1.0f * fElapsedTime;
         matrix4x4 matRotZ = Matrix_MakeRotationZ(fRoll);
         matrix4x4 matRotY = Matrix_MakeRotationY(fYaw);
         matrix4x4 matRotX = Matrix_MakeRotationX(fPitch);
@@ -203,12 +202,7 @@ public:
     }
 
 private:
-    // note: all shapes will be comprised of meshes of triangles (including this cube)
-    mesh meshCube;
     matrix4x4 projectionMatrix;
-
-    // camera positioning
-    vec3D vCamera = { 0.0f, 0.0f, 0.0f };
 
     // camera rotating;
     float fYaw = 0.0f; // rotate left/right

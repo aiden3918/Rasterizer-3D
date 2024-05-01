@@ -28,9 +28,6 @@
     <Text Include="assets\olcCopyright.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="assets\todo.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="headers\defintions.hpp">

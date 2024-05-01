@@ -137,7 +137,6 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="assets\olcCopyright.txt" />
-    <Text Include="assets\todo.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="headers\defintions.hpp" />
