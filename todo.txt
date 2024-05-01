@@ -1,0 +1,5 @@
+stuff to add:
+
+1. parametric equation functionality (cli -> screenspace) - DONE
+2. a plane that can be rotated (rotation matrix on object, probably no cameras for now) - DONE
+3. button and text functionality - DONE
