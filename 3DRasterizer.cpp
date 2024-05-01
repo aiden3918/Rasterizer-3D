@@ -10,12 +10,12 @@
 #include <regex>
 
 // #include "olcConsoleGameEngine.h"
-#include "olcPixelGameEngine.h"
-#include "olcPGEX_QuickGUI.h"
+#include "headers/olcPixelGameEngine.h"
+#include "headers/olcPGEX_QuickGUI.h"
 
-#include "plane3D.hpp"
-#include "defintions.hpp"
-#include "parametric.hpp"
+#include "headers/plane3D.hpp"
+#include "headers/defintions.hpp"
+#include "headers/parametric.hpp"
 
 class olc3DEngine : public olc::PixelGameEngine {
 public:
@@ -30,7 +30,7 @@ public:
     bool OnUserCreate() override
     {
         // INIT SPRITES --------------------------------------------------------------------------------------------
-        axesRef = std::make_unique<olc::Sprite>("axesreference.png");
+        axesRef = std::make_unique<olc::Sprite>("assets/axesreference.png");
         // ---------------------------------------------------------------------------------------------------------
         
         // INIT PLANE ----------------------------------------------------------------------------------------------
@@ -141,7 +141,7 @@ public:
         matrix4x4 matRotX = Matrix_MakeRotationX(fPitch);
 
         // translation matrix
-        matrix4x4 matTrans = Matrix_MakeTranslation(0.0f, 0.0f, 17.0f);
+        matrix4x4 matTrans = Matrix_MakeTranslation(0.0f, 0.0f, 17.5f);
 
         // matrix that handles both rotations and translations before projection that will be multiplied with vector
         matrix4x4 matWorldTransformations = Matrix_MakeIdentity();

@@ -20,35 +20,39 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="exprtk.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="plane3D.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="defintions.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="parametric.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="olcPGEX_QuickGUI.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="olcPixelGameEngineOld.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="olcPixelGameEngine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="todo.txt" />
-    <Text Include="olcCopyright.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="axesreference.png">
+    <Image Include="assets\axesreference.png">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="assets\olcCopyright.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="assets\todo.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="headers\defintions.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\exprtk.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\olcPGEX_QuickGUI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\olcPixelGameEngine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\olcPixelGameEngineOld.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\parametric.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\plane3D.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

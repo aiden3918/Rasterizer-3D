@@ -133,20 +133,20 @@
     <ClCompile Include="3DRasterizer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="defintions.hpp" />
-    <ClInclude Include="exprtk.hpp" />
-    <ClInclude Include="olcPGEX_QuickGUI.h" />
-    <ClInclude Include="olcPixelGameEngine.h" />
-    <ClInclude Include="olcPixelGameEngineOld.h" />
-    <ClInclude Include="parametric.hpp" />
-    <ClInclude Include="plane3D.hpp" />
+    <Image Include="assets\axesreference.png" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="olcCopyright.txt" />
-    <Text Include="todo.txt" />
+    <Text Include="assets\olcCopyright.txt" />
+    <Text Include="assets\todo.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="axesreference.png" />
+    <ClInclude Include="headers\defintions.hpp" />
+    <ClInclude Include="headers\exprtk.hpp" />
+    <ClInclude Include="headers\olcPGEX_QuickGUI.h" />
+    <ClInclude Include="headers\olcPixelGameEngine.h" />
+    <ClInclude Include="headers\olcPixelGameEngineOld.h" />
+    <ClInclude Include="headers\parametric.hpp" />
+    <ClInclude Include="headers\plane3D.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
