@@ -251,9 +251,9 @@ private:
             appendToGraphFunction({ (float)evaluatedPts[0][i], -1.0f * (float)evaluatedPts[1][i], (float)evaluatedPts[2][i] });
         }
 
-        for (auto j : getGraphFunction().points) {
+        /*for (auto j : getGraphFunction().points) {
             std::cout << "( " << j.x << ", " << j.y << ", " << j.z << " )" << std::endl;
-        }
+        }*/
     }
 
 
@@ -277,8 +277,8 @@ private:
         float dx = pseudoDerivative(getExpressions()[0], tToFind);
         float dy = pseudoDerivative(getExpressions()[1], tToFind);
         float dz = pseudoDerivative(getExpressions()[2], tToFind);
-        std::cout << tToFind << std::endl;
-        std::cout << pt.x << " " << pt.y << " " << pt.z << " " << std::endl;
+        //std::cout << tToFind << std::endl;
+        //std::cout << pt.x << " " << pt.y << " " << pt.z << " " << std::endl;
         ptPropertiesLabel->sText = "t = " + findPtTextInput->sText + "\n\n"
             + "pos: <" + std::to_string(pt.x) + ", " + std::to_string(pt.y) + ", " + std::to_string(pt.z) + ">" + "\n\n"
             + "f'(t): <" + std::to_string(dx) + ", " + std::to_string(dy) + ", " + std::to_string(dz) + ">" + "\n\n"
