@@ -1,7 +1,7 @@
 # 3D Rasterizer
 
 ### Description
-- Built for Windows 11 ONLY (sorry D: )
+- Built and tested for Windows 11 ONLY (sorry D: )
 - A simple program to rasterize and visualize 3D parametric functions.
 - Get properties of point at t = ...
 - Graphics library PixelGameEngine falls under the OLC-3 License*
