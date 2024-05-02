@@ -6,9 +6,6 @@ x,y,z input duplicates active text input to other inputs sometimes
 sometimes, text input freezes (can be reset with rasterize btn)
 - limit fps?
 
-circle at specific t quickly reflects back and forth between opposite y-values (i think)
-
-
 
 user feedback:
-units/bounds 
+units/bounds have no numerical label
