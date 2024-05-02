@@ -102,8 +102,9 @@ public:
 
                 resetGraphFunction();
                 updateParametricPoints();
-                ptPropertiesLabel->sText = "";
                 findPtTextInput->sText = "";
+                ptPropertiesLabel->sText = "";
+                tPoint.active = false;
             }
             else {
                 invalidMsgLabel->sText = "Invalid input(s). Please try again";
@@ -114,7 +115,9 @@ public:
         // check for valid input, then get properties of function at t
         if (findPtBtn->bPressed) {
             if (validNumInput(findPtTextInput->sText) && validExpressionInput(getExpressions())) {
-                getPtData(std::stof(findPtTextInput->sText));
+                tPoint.active = true;
+                tPoint = getPtData(std::stof(findPtTextInput->sText), getExpressions());
+                setPtDataLabel(tPoint);
                 invalidMsgLabel->sText = "";
             }
             else {
@@ -187,6 +190,30 @@ public:
                 DrawLine(postTransFn.points[i].x, postTransFn.points[i].y, postTransFn.points[i].x, postTransFn.points[i].y, olc::WHITE);
             }
         }
+
+        // if user is looking for that one "t", highlight it
+        // lazy boundary checking because :)
+        // DEBUG:   there are "two" mirrored circles sometimes with opposite y-values
+        //          technically one circle that renders back and forth
+        if (tPoint.active && (abs(tPoint.pos.x) < 10.0f && abs(tPoint.pos.y) < 10.0f && abs(tPoint.pos.z) < 10.0f)) {
+            vec3D newTPoint = tPoint.pos; 
+            tPoint.pos.y *= -1.0f; // screenspace
+
+            vec3D transformedTPoint = Matrix_MultiplyVector(matWorldTransformations, newTPoint);
+            vec3D projectedTPoint = Matrix_MultiplyVector(projectionMatrix, transformedTPoint);
+            projectedTPoint = Vector_Div(projectedTPoint, projectedTPoint.z);
+
+            vec3D vOffset = { 1.0f, 1.0f, 0.0f };
+            projectedTPoint = Vector_Add(projectedTPoint, vOffset);
+
+            projectedTPoint.x *= 0.5f * (float)ScreenWidth();
+            projectedTPoint.y *= 0.5f * (float)ScreenHeight();
+
+            vec3D postTransTPoint = Vector_Add(projectedTPoint, postProjOffset);
+
+            FillCircle({ (int)postTransTPoint.x, (int)postTransTPoint.y }, 3, olc::YELLOW); // orange
+        }
+        
         
         // --------------------------------------------------------------------------------------------------------
 
@@ -211,6 +238,7 @@ private:
 
     float fTheta = 0.0f;
 
+    pointAdvanced tPoint;
     graph graph3DPlane;
     function graphFunction;
     std::string expressions[3];
@@ -233,14 +261,14 @@ private:
         // gray bar
         FillRect( 0, 0, ScreenWidth() - 1, 120, olc::DARK_GREY);
         // axis on bot left
-        DrawSprite( olc::vi2d(0, ScreenHeight() - 200), axesRef.get());
+        DrawSprite( olc::vi2d(0, 400), axesRef.get());
         // draw all gui stuff
         guiManager.DrawDecal(this);
         // top bar text
         DrawString({ 10, 10 }, "f(t) = <     ,     ,     >", olc::WHITE, 2);
         DrawString({ 500, 10 }, "At t = ", olc::WHITE, 2);
         // copyright (OLC)
-        DrawString({ (ScreenWidth() * 11 / 20) + 40, ScreenHeight() - 20 }, "Copyright 2018 - 2024 OneLoneCoder.com", olc::WHITE, 1);
+        DrawString({ 480, 580 }, "Copyright 2018 - 2024 OneLoneCoder.com", olc::WHITE, 1);
     }
 
     void updateParametricPoints() {
@@ -270,23 +298,27 @@ private:
     // point functions
     vec3D getGraphPointWithIndex(int index) { return graphFunction.points[index]; }
     // solves it on the spot instead of reading a value; its not optimal, but it works :)
-    vec3D getGraphPointWithT(float t) { return { evaluateExpression<float>(expressions[0], t), evaluateExpression<float>(expressions[1], t), evaluateExpression<float>(expressions[2], t) };}
-    void resetPtProperties() { ptPropertiesLabel->sText = ""; }
-    void getPtData(float tToFind) {
-        vec3D pt = getGraphPointWithT(tToFind);
-        float dx = pseudoDerivative(getExpressions()[0], tToFind);
-        float dy = pseudoDerivative(getExpressions()[1], tToFind);
-        float dz = pseudoDerivative(getExpressions()[2], tToFind);
-        //std::cout << tToFind << std::endl;
-        //std::cout << pt.x << " " << pt.y << " " << pt.z << " " << std::endl;
+    vec3D getGraphPointWithT(float t, std::string* expressions) { return { evaluateExpression<float>(expressions[0], t), evaluateExpression<float>(expressions[1], t), evaluateExpression<float>(expressions[2], t) };}
+    pointAdvanced getPtData(float tToFind, std::string* expressions) { // reformat this to JUST to get pt data (use return to show label and point on graph)
+        pointAdvanced pointOfInterest;
+
+        pointOfInterest.pos = getGraphPointWithT(tToFind, expressions);
+        pointOfInterest.deriv.x = pseudoDerivative(expressions[0], tToFind);
+        pointOfInterest.deriv.y = pseudoDerivative(expressions[1], tToFind);
+        pointOfInterest.deriv.z = pseudoDerivative(expressions[2], tToFind);
+        pointOfInterest.derivMag = ((pointOfInterest.deriv.x * pointOfInterest.deriv.x) + (pointOfInterest.deriv.y * pointOfInterest.deriv.y) + (pointOfInterest.deriv.z * pointOfInterest.deriv.z));
+
+        return pointOfInterest;
+    }
+
+    void setPtDataLabel(pointAdvanced pt) {
         ptPropertiesLabel->sText = "t = " + findPtTextInput->sText + "\n\n"
-            + "pos: <" + std::to_string(pt.x) + ", " + std::to_string(pt.y) + ", " + std::to_string(pt.z) + ">" + "\n\n"
-            + "f'(t): <" + std::to_string(dx) + ", " + std::to_string(dy) + ", " + std::to_string(dz) + ">" + "\n\n"
-            + "|f'(t)|: " + std::to_string(sqrt(dx * dx + dy * dy + dz * dz));
+            + "pos: <" + std::to_string(pt.pos.x) + ", " + std::to_string(pt.pos.y) + ", " + std::to_string(pt.pos.z) + ">" + "\n\n"
+            + "f'(t): <" + std::to_string(pt.deriv.x) + ", " + std::to_string(pt.deriv.y) + ", " + std::to_string(pt.deriv.z) + ">" + "\n\n"
+            + "|f'(t)|: " + std::to_string(pt.derivMag);
     }
 
     // type checking
-    // looooooong
     bool validExpressionInput(std::string* expressions) { 
         bool xOk = !isnan(evaluateExpression<double>(expressions[0], 0));
         bool yOk = !isnan(evaluateExpression<double>(expressions[1], 0));
@@ -301,10 +333,11 @@ private:
 // fancy main to get rid of console
 // is there a better way to do this? maybe.
 // am i lazy? yes.
-// DEBUG: debug build has no console, release does
+
 int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmdshow)
 {
-    FreeConsole();
+    // WinMainCRTStartup
+    // FreeConsole();
     olc3DEngine rasterizer3D;
 
     if (rasterizer3D.Construct(800, 600, 1, 1)) {
@@ -313,6 +346,7 @@ int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmd
 
     return 0;
 }
+
 
 // sort by providing a condition in a lambda function beginning and ending parameters
 // third parameter tells algorithm to sort in ascending order based on z values

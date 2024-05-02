@@ -11,6 +11,11 @@
 2. Click "3DRasterizer.exe"
 3. Done!
 
+### Controls
+- W/A/S/D or arrow keys to rotate graph
+- "R" to reset graph to initial orientation
+- GUI should be self-explanatory
+
 *Copyright 2018 - 2024 OneLoneCoder.com
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:

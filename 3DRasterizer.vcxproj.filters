@@ -56,5 +56,6 @@
     <None Include="README.md">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="3DRasterizer.exe" />
   </ItemGroup>
 </Project>

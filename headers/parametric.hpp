@@ -5,8 +5,8 @@
 
 #include <iostream>
 #include <string>
-#include "exprtk.hpp"
-#include "defintions.hpp"
+#include "headers/exprtk.hpp"
+#include "headers/defintions.hpp"
 
 // standard library-provided function for solving an expression
 template <typename T>

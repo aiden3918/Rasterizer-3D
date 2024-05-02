@@ -16,6 +16,13 @@ struct vec3D {
     float w = 1.0f;
 };
 
+struct pointAdvanced {
+    vec3D pos;
+    vec3D deriv;
+    float derivMag;
+    bool active;
+};
+
 struct triangle {
     vec3D vertices[3];
 };
