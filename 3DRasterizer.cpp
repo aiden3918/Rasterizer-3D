@@ -87,11 +87,7 @@ public:
         if (GetKey(olc::D).bHeld || GetKey(olc::RIGHT).bHeld) fYaw += fElapsedTime;
         if (GetKey(olc::W).bHeld || GetKey(olc::UP).bHeld) fPitch -= fElapsedTime;
         if (GetKey(olc::S).bHeld || GetKey(olc::DOWN).bHeld) fPitch += fElapsedTime;
-        if (GetKey(olc::R).bHeld)
-        {
-            fPitch = 0.0f;
-            fYaw = 0.0f;
-        }
+        if (GetKey(olc::R).bHeld) { fPitch = 0.0f; fYaw = 0.0f; }
 
         // check for valid inputs, then update graph if its good
         if (calcBtn->bPressed) {
@@ -99,11 +95,11 @@ public:
             setExpression(1, yTextInput->sText);
             setExpression(2, zTextInput->sText);
             if (validExpressionInput(getExpressions())) {
-
                 resetGraphFunction();
                 updateParametricPoints();
                 findPtTextInput->sText = "";
                 ptPropertiesLabel->sText = "";
+                invalidMsgLabel->sText = "";
                 tPoint.active = false;
             }
             else {
@@ -173,7 +169,6 @@ public:
         for (int i = 45; i <= 65; i++) {
             DrawLine(postTransGraph.lines[i].point[0].x, postTransGraph.lines[i].point[0].y, postTransGraph.lines[i].point[1].x, postTransGraph.lines[i].point[1].y, olc::BLUE);
         }
-
         // --------------------------------------------------------------------------------------------------------
 
         // GRAPH STUFF --------------------------------------------------------------------------------------------
@@ -192,14 +187,10 @@ public:
         }
 
         // if user is looking for that one "t", highlight it
-        // lazy boundary checking because :)
-        // DEBUG:   there are "two" mirrored circles sometimes with opposite y-values
-        //          technically one circle that renders back and forth
+        // lazy boundary checking and unoptimal methods because :)
         if (tPoint.active && (abs(tPoint.pos.x) < 10.0f && abs(tPoint.pos.y) < 10.0f && abs(tPoint.pos.z) < 10.0f)) {
-            vec3D newTPoint = tPoint.pos; 
-            tPoint.pos.y *= -1.0f; // screenspace
 
-            vec3D transformedTPoint = Matrix_MultiplyVector(matWorldTransformations, newTPoint);
+            vec3D transformedTPoint = Matrix_MultiplyVector(matWorldTransformations, tPoint.mathPos);
             vec3D projectedTPoint = Matrix_MultiplyVector(projectionMatrix, transformedTPoint);
             projectedTPoint = Vector_Div(projectedTPoint, projectedTPoint.z);
 
@@ -211,10 +202,9 @@ public:
 
             vec3D postTransTPoint = Vector_Add(projectedTPoint, postProjOffset);
 
-            FillCircle({ (int)postTransTPoint.x, (int)postTransTPoint.y }, 3, olc::YELLOW); // orange
-        }
-        
-        
+            FillCircle({ (int)postTransTPoint.x, (int)postTransTPoint.y }, 3, olc::YELLOW);
+            std::cout << postTransTPoint.y << std::endl;
+        }       
         // --------------------------------------------------------------------------------------------------------
 
         // GUI STUFF ----------------------------------------------------------------------------------------------
@@ -308,6 +298,8 @@ private:
         pointOfInterest.deriv.z = pseudoDerivative(expressions[2], tToFind);
         pointOfInterest.derivMag = ((pointOfInterest.deriv.x * pointOfInterest.deriv.x) + (pointOfInterest.deriv.y * pointOfInterest.deriv.y) + (pointOfInterest.deriv.z * pointOfInterest.deriv.z));
 
+        pointOfInterest.mathPos = { pointOfInterest.pos.x, pointOfInterest.pos.y * -1.0f, pointOfInterest.pos.z, 1.0f };
+
         return pointOfInterest;
     }
 
@@ -333,7 +325,6 @@ private:
 // fancy main to get rid of console
 // is there a better way to do this? maybe.
 // am i lazy? yes.
-
 int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmdshow)
 {
     // WinMainCRTStartup

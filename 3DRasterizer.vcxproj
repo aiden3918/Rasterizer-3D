@@ -140,6 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="assets\olcCopyright.txt" />
+    <Text Include="bugs.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="headers\defintions.hpp" />

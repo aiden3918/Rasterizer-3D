@@ -21,6 +21,9 @@ struct pointAdvanced {
     vec3D deriv;
     float derivMag;
     bool active;
+    
+    // ACK
+    vec3D mathPos;
 };
 
 struct triangle {
