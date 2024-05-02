@@ -301,8 +301,10 @@ private:
 // fancy main to get rid of console
 // is there a better way to do this? maybe.
 // am i lazy? yes.
+// DEBUG: debug build has no console, release does
 int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmdshow)
 {
+    FreeConsole();
     olc3DEngine rasterizer3D;
 
     if (rasterizer3D.Construct(800, 600, 1, 1)) {
