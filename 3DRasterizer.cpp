@@ -328,7 +328,7 @@ private:
 int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmdshow)
 {
     // WinMainCRTStartup
-    // FreeConsole();
+    FreeConsole();
     olc3DEngine rasterizer3D;
 
     if (rasterizer3D.Construct(800, 600, 1, 1)) {
