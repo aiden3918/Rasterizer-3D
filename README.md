@@ -9,8 +9,11 @@
 
 ### How to Use
 1. Download files
-2. Click "3DRasterizer.exe"
-3. Done!
+2. Open the downloaded folder in File Explorer
+3. Right click the folder, and click "Extract All"
+4. Click into the newly created folder until you find a bunch of files and folders
+5. Click "3DRasterizer.exe"
+6. Done!
 
 ### Controls
 - W/A/S/D or arrow keys to rotate graph
