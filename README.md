@@ -1,4 +1,4 @@
-# 3D Rasterizer
+# 3D Function Rasterizer
 
 ### Description
 - Built and tested for Windows 11 ONLY (sorry D: )
