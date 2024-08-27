@@ -111,9 +111,9 @@ public:
         // check for valid input, then get properties of function at t
         if (findPtBtn->bPressed) {
             if (validNumInput(findPtTextInput->sText) && validExpressionInput(getExpressions())) {
-                tPoint.active = true;
                 tPoint = getPtData(std::stof(findPtTextInput->sText), getExpressions());
                 setPtDataLabel(tPoint);
+                tPoint.active = true;
                 invalidMsgLabel->sText = "";
             }
             else {
@@ -188,7 +188,8 @@ public:
 
         // if user is looking for that one "t", highlight it
         // lazy boundary checking and unoptimal methods because :)
-        if (tPoint.active && (abs(tPoint.pos.x) < 10.0f && abs(tPoint.pos.y) < 10.0f && abs(tPoint.pos.z) < 10.0f)) {
+        if (tPoint.active && (abs(tPoint.pos.x) < 10.0f &&
+            abs(tPoint.pos.y) < 10.0f && abs(tPoint.pos.z) < 10.0f)) {
 
             vec3D transformedTPoint = Matrix_MultiplyVector(matWorldTransformations, tPoint.mathPos);
             vec3D projectedTPoint = Matrix_MultiplyVector(projectionMatrix, transformedTPoint);
@@ -203,7 +204,6 @@ public:
             vec3D postTransTPoint = Vector_Add(projectedTPoint, postProjOffset);
 
             FillCircle({ (int)postTransTPoint.x, (int)postTransTPoint.y }, 3, olc::YELLOW);
-            std::cout << postTransTPoint.y << std::endl;
         }       
         // --------------------------------------------------------------------------------------------------------
 
@@ -325,19 +325,32 @@ private:
 // fancy main to get rid of console
 // is there a better way to do this? maybe.
 // am i lazy? yes.
-int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmdshow)
+//int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmdshow)
+//{
+//    // WinMainCRTStartup
+//    FreeConsole();
+//    olc3DEngine rasterizer3D;
+//
+//    if (rasterizer3D.Construct(800, 600, 1, 1)) {
+//        rasterizer3D.Start();     
+//    }
+//
+//    return 0;
+//}
+
+#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
+
+int main(int argc, char** argv)
 {
-    // WinMainCRTStartup
     FreeConsole();
     olc3DEngine rasterizer3D;
 
     if (rasterizer3D.Construct(800, 600, 1, 1)) {
-        rasterizer3D.Start();     
+        rasterizer3D.Start();
     }
 
     return 0;
 }
-
 
 // sort by providing a condition in a lambda function beginning and ending parameters
 // third parameter tells algorithm to sort in ascending order based on z values
